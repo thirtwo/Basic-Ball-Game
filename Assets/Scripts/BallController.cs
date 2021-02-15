@@ -9,6 +9,7 @@ public class BallController : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float jumpForce;
     [SerializeField] bool isOnGround;
+    [SerializeField] int playerHealth;
     float vertical;
     float horizontal;
 
@@ -29,8 +30,8 @@ public class BallController : MonoBehaviour
     }
     void Move()
     {
-        rb.AddForce(Vector3.forward * movementSpeed * Time.fixedDeltaTime * vertical, ForceMode.Force);
-        rb.AddForce(Vector3.right * movementSpeed * Time.fixedDeltaTime * horizontal, ForceMode.Force);
+        rb.AddForce(Vector3.forward * movementSpeed * Time.fixedDeltaTime * vertical, ForceMode.VelocityChange);
+        rb.AddForce(Vector3.right * movementSpeed * Time.fixedDeltaTime * horizontal, ForceMode.VelocityChange);
     }
     void Jump()
     {
@@ -80,6 +81,14 @@ public class BallController : MonoBehaviour
             jumpForce += 5;
             yield return new WaitForSeconds(2);
             jumpForce -= 5;
+        }
+    }
+    public void TakeDamage(int damage)
+    {
+        playerHealth -= damage;
+        if(playerHealth <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 }
