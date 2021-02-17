@@ -63,8 +63,16 @@ public class BallController : MonoBehaviour
         if(other.tag == "Collectible")
         {
             int x = other.GetComponent<Collectible>().collectibleType;
-            other.GetComponent<Collectible>().Collected();
-            StartCoroutine(Boost(x));
+            if (x <= 1)
+            {
+                other.GetComponent<Collectible>().Collected();
+                StartCoroutine(Boost(x));
+            }
+            else
+            {
+                FindObjectOfType<GameManager>().AddMoney();
+                other.GetComponent<Collectible>().Collected();
+            }
         }
     }
 
