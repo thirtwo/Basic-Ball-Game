@@ -11,32 +11,30 @@ public class EnemyAI : Enemy
         patrolFinishPoint = transform.position + Vector3.right * patrolDistance;
 
     }
-    private void Update()
+    private void FixedUpdate()
     {
-        targetDistance = Vector3.Distance(target.position, transform.position);
-        if (Mathf.Abs(targetDistance) > alertDistance)
+        
+        if (Mathf.Abs(Vector3.Distance(patrolStartPoint, transform.position)) < 0.2f)
         {
-            if (Mathf.Abs(Vector3.Distance(patrolStartPoint, transform.position)) < 0.2f)
-            {
-                onStartPoint = true;
-            }
-            else if (Mathf.Abs(Vector3.Distance(patrolFinishPoint, transform.position)) < 0.2f)
-            {
-                onStartPoint = false;
-            }
+            onStartPoint = true;
+            transform.Rotate(0, 180, 0);
+        }
+        else if (Mathf.Abs(Vector3.Distance(patrolFinishPoint, transform.position)) < 0.2f)
+        {
+            onStartPoint = false;
+            transform.Rotate(0, 180, 0);
+        }
 
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        }
+       
         if (onStartPoint)
         {
-            Patrol(patrolFinishPoint);
+
+            Watch(Vector3.right, patrolFinishPoint);
         }
         else
         {
-            Patrol(patrolStartPoint);
+
+            Watch(Vector3.left, patrolStartPoint);
         }
 
     }

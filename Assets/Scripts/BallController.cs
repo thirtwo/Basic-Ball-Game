@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BallController : MonoBehaviour
@@ -91,12 +92,18 @@ public class BallController : MonoBehaviour
             jumpForce -= 5;
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage) //Takedamage function takes damage parameter.  
     {
-        playerHealth -= damage;
-        if(playerHealth <= 0)
+        playerHealth -= damage; //player health is reduced by the damage taken
+        if (playerHealth <= 0)
         {
-            gameObject.SetActive(false);
+            gameObject.GetComponent<MeshRenderer>().enabled = false; // mesh is being disabled.
+            StartCoroutine(LoadActiveScene()); //scene is reloading.
         }
+    }
+    private IEnumerator LoadActiveScene() // It will load "BallGameScene" after 1 second interval
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("BallGameScene");
     }
 }
